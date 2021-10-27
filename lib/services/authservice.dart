@@ -1,0 +1,136 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/material.dart';
+// import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:lost_and_found/error_handler.dart';
+import 'package:lost_and_found/login_page.dart';
+
+import '../home_page.dart';
+
+class AuthService {
+  handleAuth() {
+    return StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (BuildContext context, snapshot) {
+          if (snapshot.hasData) {
+            return HomePage();
+          } else
+            return LoginPage();
+        });
+  }
+
+  signOut() {
+    FirebaseAuth.instance.signOut();
+  }
+
+  signIn(String email, String password, context) {
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((val) {
+      print('signed in');
+    }).catchError((e) {
+      ErrorHandler().errorDialog(context, e);
+    });
+  }
+
+  googleLogin() {
+    FirebaseAuth user = signInWithGoogle() as FirebaseAuth;
+    return StreamBuilder(
+        stream: user.authStateChanges(),
+        builder: (BuildContext context, snapshot) {
+          if (snapshot.hasData) {
+            return HomePage();
+          } else
+            return LoginPage();
+        });
+  }
+
+  Future<FirebaseAuth> signInWithGoogle() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    UserCredential? userCredential;
+
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
+
+    if (googleSignInAccount != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      try {
+        userCredential = await auth.signInWithCredential(credential);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'account-exists-with-different-credential') {
+          print(e);
+        } else if (e.code == 'invalid-credential') {
+          print(e);
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    return auth;
+  }
+
+  // fbSignIn() async {
+  //   final fb = FacebookLogin();
+
+  //   final res = await fb.logIn(permissions: [
+  //     FacebookPermission.publicProfile,
+  //     FacebookPermission.email,
+  //   ]);
+
+  //   switch (res.status) {
+  //     case FacebookLoginStatus.success:
+
+  //       // Send access token to server for validation and auth
+  //       final FacebookAccessToken accessToken = res.accessToken;
+  //       final AuthCredential authCredential =
+  //           FacebookAuthProvider.credential(accessToken.token);
+  //       final result =
+  //           await FirebaseAuth.instance.signInWithCredential(authCredential);
+
+  //       // Get profile data
+  //       final profile = await fb.getUserProfile();
+  //       print('Hello, ${profile.name}! You ID: ${profile.userId}');
+
+  //       // Get user profile image url
+  //       final imageUrl = await fb.getProfileImageUrl(width: 100);
+  //       print('Your profile image: $imageUrl');
+
+  //       // Get email (since we request email permission)
+  //       final email = await fb.getUserEmail();
+  //       // But user can decline permission
+  //       if (email != null) print('And your email is $email');
+
+  //       break;
+  //     case FacebookLoginStatus.cancel:
+  //       // User cancel log in
+  //       break;
+  //     case FacebookLoginStatus.error:
+  //       // Log in failed
+  //       print('Error while log in: ${res.error}');
+  //       break;
+  //   }
+  // }
+
+  //Signup a new user
+  signUp(String email, String password) {
+    return FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+  }
+
+  //Reset Password
+  resetPasswordLink(String email) {
+    FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+}
