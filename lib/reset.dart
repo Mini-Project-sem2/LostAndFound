@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:flutterfbauth/error_handler.dart';
+import 'package:lost_and_found/global_constant.dart';
 import 'package:lost_and_found/services/authservice.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -12,7 +12,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   late String email;
 
-  Color blueColor = Color(0xFF1167b1);
+  Color blueColor = GlobalResource.BLUE_COLOUR;
 
   //To check fields during submit
   checkFields() {
@@ -26,9 +26,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   //To Validate email
   String? validateEmail(String value) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
+    RegExp regex = new RegExp(GlobalConstant.PATTERN);
     if (!regex.hasMatch(value))
       return 'Enter Valid Email';
     else
