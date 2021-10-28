@@ -49,6 +49,7 @@ class AuthService {
 
   Future<FirebaseAuth> signInWithGoogle() async {
     FirebaseAuth auth = FirebaseAuth.instance;
+    // ignore: unused_local_variable
     UserCredential? userCredential;
 
     final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -80,48 +81,6 @@ class AuthService {
 
     return auth;
   }
-
-  // fbSignIn() async {
-  //   final fb = FacebookLogin();
-
-  //   final res = await fb.logIn(permissions: [
-  //     FacebookPermission.publicProfile,
-  //     FacebookPermission.email,
-  //   ]);
-
-  //   switch (res.status) {
-  //     case FacebookLoginStatus.success:
-
-  //       // Send access token to server for validation and auth
-  //       final FacebookAccessToken accessToken = res.accessToken;
-  //       final AuthCredential authCredential =
-  //           FacebookAuthProvider.credential(accessToken.token);
-  //       final result =
-  //           await FirebaseAuth.instance.signInWithCredential(authCredential);
-
-  //       // Get profile data
-  //       final profile = await fb.getUserProfile();
-  //       print('Hello, ${profile.name}! You ID: ${profile.userId}');
-
-  //       // Get user profile image url
-  //       final imageUrl = await fb.getProfileImageUrl(width: 100);
-  //       print('Your profile image: $imageUrl');
-
-  //       // Get email (since we request email permission)
-  //       final email = await fb.getUserEmail();
-  //       // But user can decline permission
-  //       if (email != null) print('And your email is $email');
-
-  //       break;
-  //     case FacebookLoginStatus.cancel:
-  //       // User cancel log in
-  //       break;
-  //     case FacebookLoginStatus.error:
-  //       // Log in failed
-  //       print('Error while log in: ${res.error}');
-  //       break;
-  //   }
-  // }
 
   //Signup a new user
   signUp(String email, String password) {

@@ -1,7 +1,5 @@
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lost_and_found/home_page.dart';
+import 'package:lost_and_found/global_constant.dart';
 import 'package:lost_and_found/reset.dart';
 import 'package:lost_and_found/services/authservice.dart';
 import 'package:lost_and_found/signup.dart';
@@ -16,7 +14,7 @@ class _LoginPageState extends State<LoginPage> {
 
   late String email, password;
 
-  Color blueColor = Color(0xFF1167b1);
+  Color blueColor = GlobalResource.BLUE_COLOUR;
 
   //To check fields during submit
   checkFields() {
@@ -30,9 +28,7 @@ class _LoginPageState extends State<LoginPage> {
 
   //To Validate email
   String? validateEmail(String value) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
+    RegExp regex = new RegExp(GlobalConstant.PATTERN);
     if (!regex.hasMatch(value))
       return 'Enter Valid Email';
     else
@@ -87,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: 12.0,
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Color(0xFF001084))))
+                              color: GlobalResource.DARK_BLUE)))
                 ],
               )),
           SizedBox(height: 25.0),
