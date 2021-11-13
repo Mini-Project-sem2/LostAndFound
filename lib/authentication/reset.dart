@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:lost_and_found/error_handler.dart';
+import 'package:lost_and_found/global_constant.dart';
 import 'package:lost_and_found/services/authservice.dart';
 
-class SignupPage extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   @override
-  _SignupPageState createState() => _SignupPageState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _ResetPasswordState extends State<ResetPassword> {
   final formKey = new GlobalKey<FormState>();
 
-  late String email, password;
+  late String email;
 
-  Color blueColor = Color(0xFF1167b1);
+  Color blueColor = GlobalResource.BLUE_COLOUR;
 
   //To check fields during submit
   checkFields() {
@@ -24,10 +24,9 @@ class _SignupPageState extends State<SignupPage> {
     return false;
   }
 
+  //To Validate email
   String? validateEmail(String value) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
+    RegExp regex = new RegExp(GlobalConstant.PATTERN);
     if (!regex.hasMatch(value))
       return 'Enter Valid Email';
     else
@@ -40,31 +39,30 @@ class _SignupPageState extends State<SignupPage> {
         body: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: Form(key: formKey, child: _buildSignupForm())));
+            child: Form(key: formKey, child: _buildResetForm())));
   }
 
-  _buildSignupForm() {
+  _buildResetForm() {
     return Padding(
         padding: const EdgeInsets.only(left: 25.0, right: 25.0),
         child: ListView(children: [
           SizedBox(height: 75.0),
           Container(
               height: 125.0,
-              width: 210.0,
+              width: 200.0,
               child: Stack(
                 children: [
-                  Text('Signup',
+                  Text('reset',
                       style: TextStyle(fontFamily: 'Trueno', fontSize: 60.0)),
                   //Dot placement
                   Positioned(
-                      top: 60.0,
-                      left: 212.0,
+                      top: 49.0,
+                      left: 174.0,
                       child: Container(
-                          height: 10.0,
-                          width: 10.0,
+                          height: 15.0,
+                          width: 15.0,
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Color(0xFF001084))))
+                              shape: BoxShape.circle, color: blueColor)))
                 ],
               )),
           SizedBox(height: 25.0),
@@ -83,31 +81,11 @@ class _SignupPageState extends State<SignupPage> {
               },
               validator: (value) =>
                   value!.isEmpty ? 'Email is required' : validateEmail(value)),
-          TextFormField(
-              decoration: InputDecoration(
-                  labelText: 'PASSWORD',
-                  labelStyle: TextStyle(
-                      fontFamily: 'Trueno',
-                      fontSize: 12.0,
-                      color: Colors.grey.withOpacity(0.5)),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: blueColor),
-                  )),
-              obscureText: true,
-              onChanged: (value) {
-                this.password = value;
-              },
-              validator: (value) =>
-                  value!.isEmpty ? 'Password is required' : null),
           SizedBox(height: 50.0),
           GestureDetector(
             onTap: () {
-              if (checkFields())
-                AuthService().signUp(email, password).then((userCreds) {
-                  Navigator.of(context).pop();
-                }).catchError((e) {
-                  ErrorHandler().errorDialog(context, e);
-                });
+              if (checkFields()) AuthService().resetPasswordLink(email);
+              Navigator.of(context).pop();
             },
             child: Container(
                 height: 50.0,
@@ -117,7 +95,7 @@ class _SignupPageState extends State<SignupPage> {
                     color: blueColor,
                     elevation: 7.0,
                     child: Center(
-                        child: Text('SIGN UP',
+                        child: Text('RESET',
                             style: TextStyle(
                                 color: Colors.white, fontFamily: 'Trueno'))))),
           ),
@@ -129,9 +107,9 @@ class _SignupPageState extends State<SignupPage> {
                 },
                 child: Text('Go back',
                     style: TextStyle(
-                      color: blueColor,
-                      fontFamily: 'Trueno',
-                    )))
+                        color: blueColor,
+                        fontFamily: 'Trueno',
+                        decoration: TextDecoration.underline)))
           ])
         ]));
   }

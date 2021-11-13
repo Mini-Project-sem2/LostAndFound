@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_login_facebook/flutter_login_facebook.dart';
-import 'package:lost_and_found/error_handler.dart';
-import 'package:lost_and_found/login_page.dart';
+import 'package:lost_and_found/authentication/login_page.dart';
+import 'package:lost_and_found/src/home_page.dart';
+import 'package:lost_and_found/authentication/error_handler.dart';
 
-import '../home_page.dart';
+import '../src/home_page.dart';
 
 class AuthService {
   handleAuth() {
@@ -60,6 +60,7 @@ class AuthService {
     if (googleSignInAccount != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount.authentication;
+      // new user.User(UserBuilder.withN);
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
