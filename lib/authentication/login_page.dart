@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lost_and_found/utils/background_painter.dart';
 import 'package:lost_and_found/global_constant.dart';
-import 'package:lost_and_found/reset.dart';
+import 'package:lost_and_found/authentication/reset.dart';
 import 'package:lost_and_found/services/authservice.dart';
-import 'package:lost_and_found/signup.dart';
+import 'package:lost_and_found/authentication/signup.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -48,42 +49,19 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
         padding: const EdgeInsets.only(left: 25.0, right: 25.0),
         child: ListView(children: [
+          CustomPaint(painter: BackgroundPainter()),
           SizedBox(height: 75.0),
           Container(
               height: 125.0,
               width: 200.0,
               child: Stack(
                 children: [
-                  Text('Lost',
-                      style: TextStyle(
-                          fontFamily: 'Trueno',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 60.0)),
                   Positioned(
-                    top: 8,
-                    left: 140,
-                    child: Text('&',
-                        style: TextStyle(
-                            fontFamily: 'Trueno',
-                            fontStyle: FontStyle.italic,
-                            fontSize: 52.0)),
-                  ),
-                  Positioned(
-                      top: 50.0,
-                      child: Text('Found',
-                          style: TextStyle(
-                              fontFamily: 'Trueno',
-                              fontWeight: FontWeight.bold,
-                              fontSize: 60.0))),
-                  Positioned(
-                      top: 97.0,
-                      left: 197.0,
-                      child: Container(
-                          height: 12.0,
-                          width: 12.0,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: GlobalResource.DARK_BLUE)))
+                    child: Image(
+                      image: AssetImage("./assets/track_it_logo.jpg"),
+                      fit: BoxFit.cover,
+                    ),
+                  )
                 ],
               )),
           SizedBox(height: 25.0),

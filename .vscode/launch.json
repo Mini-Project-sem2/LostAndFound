@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   // Use IntelliSense to learn about possible attributes.
   // Hover to view descriptions of existing attributes.
@@ -18,25 +17,4 @@
                       ]
           }
   ]
-=======
-{
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "1.0.0",
-  "configurations": [
-          {
-                  "name": "lost_and_found",
-                  "program": "lib/main.dart",
-                  "request": "launch",
-                  "type": "dart",
-                  "args": [
-                          "--no-sound-null-safety",
-                          "--enable-software-rendering",
-                          "--enable-hardware-rendering",
-                          "--debug"
-                      ]
-          }
-  ]
->>>>>>> 0d6ae442b240ff8ace04384f2cb5a1039bec88a5
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class LostForm extends StatelessWidget {
-  const LostForm({Key? key}) : super(key: key);
+class FoundForm extends StatelessWidget {
+  const FoundForm({Key? key}) : super(key: key);
 
-  static const String _title = 'lost form';
+  static const String _title = 'Found form';
 
   @override
   Widget build(BuildContext context) {
@@ -29,48 +29,50 @@ class MyStatefulWidget extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  String dropdownValue = 'Select type of object';
+  String dropdownValue = "government ids & certificate";
+  List<String> _itemset = [
+    "Electronic items",
+    "government ids & certificate",
+    "Expensive items",
+    "Bag",
+    "Book",
+    "pet"
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
             padding: EdgeInsets.all(1),
-            child: Column(
+            child: SingleChildScrollView(
+                child: Column(
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(15),
 
                   // dropdown
                   child: Container(
-                    padding: EdgeInsets.only(left: 15, right: 15),
+                    padding: EdgeInsets.all(15),
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1),
-                        borderRadius: BorderRadius.circular(15)),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey)),
                     child: DropdownButton<String>(
-                        hint: Text("select items: "),
-                        dropdownColor: Colors.white,
-                        icon: Icon(Icons.arrow_drop_down),
-                        iconSize: 30,
-                        isExpanded: true,
-                        underline: SizedBox(),
-                        value: dropdownValue,
-                        items: <String>[
-                          'Select type of object',
-                          'Two',
-                          'Free',
-                          'Four'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownValue = newValue!;
-                          });
-                        }),
+                      value: dropdownValue,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                        });
+                      },
+                      items: _itemset
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
 
@@ -120,6 +122,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 Padding(
                     padding: EdgeInsets.all(15),
                     child: TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        prefixIcon: Icon(Icons.calendar_today),
+                        labelText: 'Date',
+                        hintText: "Date",
+                      ),
                       onTap: () {
                         showDatePicker(
                             context: context,
@@ -127,11 +136,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             firstDate: DateTime(2000),
                             lastDate: DateTime(2022));
                       },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        labelText: 'select date',
-                      ),
                     )),
 
                 // Starting location
@@ -141,21 +145,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15)),
-                      labelText: 'Starting location',
-                      hintText: 'starting point',
-                    ),
-                  ),
-                ),
-
-                // ending location
-                Padding(
-                  padding: EdgeInsets.all(15),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      labelText: 'Ending location',
-                      hintText: 'ending point',
+                      labelText: 'location',
+                      hintText: 'location',
                     ),
                   ),
                 ),
@@ -180,6 +171,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       onPressed: () {},
                     )),
               ],
-            )));
+            ))));
   }
 }
