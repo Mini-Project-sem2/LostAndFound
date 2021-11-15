@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lost_and_found/utils/background_painter.dart';
 import 'package:lost_and_found/global_constant.dart';
 import 'package:lost_and_found/authentication/reset.dart';
 import 'package:lost_and_found/services/authservice.dart';
@@ -49,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
         padding: const EdgeInsets.only(left: 25.0, right: 25.0),
         child: ListView(children: [
-          CustomPaint(painter: BackgroundPainter()),
           SizedBox(height: 75.0),
           Container(
               height: 125.0,
