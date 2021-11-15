@@ -25,16 +25,19 @@ class _HomePageState extends State<HomePage> {
             ),
             titleSpacing: 10,
             actions: <Widget>[
-              TextButton.icon(
-                onPressed: () {
-                  AuthService().signOut();
-                },
-                icon: Icon(
-                  Icons.login_outlined,
-                  color: Color(0xFFf5f5f5),
-                ),
-                label: Text(''),
-              )
+              Tooltip(
+                  message: "logout",
+                  triggerMode: TooltipTriggerMode.longPress,
+                  child: TextButton.icon(
+                    onPressed: () {
+                      AuthService().signOut();
+                    },
+                    icon: Icon(
+                      Icons.login_outlined,
+                      color: Color(0xFFf5f5f5),
+                    ),
+                    label: Text(''),
+                  ))
             ]),
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           GestureDetector(
