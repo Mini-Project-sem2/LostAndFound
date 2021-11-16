@@ -9,22 +9,16 @@ class DBConnection {
   late Db _db;
 
   static getInstance() {
-    // ignore: unnecessary_null_comparison
-    if (_instance == null) {
-      _instance = DBConnection();
-    }
+    _instance = DBConnection();
     return _instance;
   }
 
   Future<Db> getConnection() async {
-    // ignore: unnecessary_null_comparison
-    if (_db == null) {
-      try {
-        _db = Db(_getConnectionString());
-        await _db.open();
-      } catch (e) {
-        print(e);
-      }
+    try {
+      _db = Db(_getConnectionString());
+      await _db.open();
+    } catch (e) {
+      print(e);
     }
     return _db;
   }
@@ -33,7 +27,7 @@ class DBConnection {
     return "mongodb://$_host:$_port/$_dbName";
   }
 
-  closeConnrction() {
+  closeConnection() {
     _db.close();
   }
 }
