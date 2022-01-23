@@ -4,10 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_and_found/authentication/login_page.dart';
-import 'package:lost_and_found/src/home_page.dart';
+import 'package:lost_and_found/home/home_page.dart';
 import 'package:lost_and_found/authentication/error_handler.dart';
 
-import '../src/home_page.dart';
+import '../home/home_page.dart';
 
 class AuthService {
   handleAuth() {
@@ -15,7 +15,7 @@ class AuthService {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
-            return HomePage();
+            return HomePage(FirebaseAuth.instance.currentUser);
           } else
             return LoginPage();
         });
@@ -41,7 +41,7 @@ class AuthService {
         stream: user.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
-            return HomePage();
+            return HomePage(user.currentUser);
           } else
             return LoginPage();
         });
