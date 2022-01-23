@@ -1,7 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lost_and_found/database/db_funtions.dart';
+import 'package:lost_and_found/home/home_page.dart';
+
+User? user;
 
 class LostForm extends StatelessWidget {
-  const LostForm({Key? key}) : super(key: key);
+  LostForm(User? result) {
+    user = result;
+  }
 
   static const String _title = 'lost form';
 
@@ -49,7 +58,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(15),
-
                   // dropdown
                   child: Container(
                     padding: EdgeInsets.all(15),
@@ -118,7 +126,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   ),
                 ),
 
-                // Date
                 Padding(
                     padding: EdgeInsets.all(15),
                     child: TextField(
@@ -138,30 +145,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       },
                     )),
 
-                // Starting location
                 Padding(
                   padding: EdgeInsets.all(15),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      labelText: 'Starting location',
-                      hintText: 'starting point',
-                    ),
-                  ),
-                ),
-
-                // ending location
-                Padding(
-                  padding: EdgeInsets.all(15),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      labelText: 'Ending location',
-                      hintText: 'ending point',
-                    ),
-                  ),
                 ),
 
                 // submit button
@@ -181,7 +166,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        addLostData();
+                        Fluttertoast.showToast(
+                            msg: "lost form is submitted",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => HomePage(user)));
+                      },
                     )),
               ],
             ))));

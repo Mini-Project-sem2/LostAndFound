@@ -1,10 +1,5 @@
 import 'package:mongo_dart/mongo_dart.dart';
-
 import 'db_connection.dart';
-
-void main(List<String> args) {
-  crud();
-}
 
 crud() async {
   DBConnection dbc = DBConnection.getInstance();
@@ -18,6 +13,9 @@ crud() async {
   await Future.delayed(const Duration(seconds: 10));
 
   var read = await coll.find(where.eq("color", "black")).toList();
+  read = await coll
+      .find(where.eq("color", "black").and(where.eq("brand", "redmi")))
+      .toList();
   print(read);
   await Future.delayed(const Duration(seconds: 10));
 
@@ -27,7 +25,22 @@ crud() async {
   await coll.remove(where.eq("brand", "sony"));
   await Future.delayed(const Duration(seconds: 10));
 
-  read = await coll.find().toList();
-  print(read);
+  List<Map<String, dynamic>> mylist = await coll.find().toList();
+  print(mylist[0]["brand"]);
+  dbc.closeConnection();
+}
+
+addLostData() async {
+  DBConnection dbc = DBConnection.getInstance();
+  Db db = await dbc.getConnection();
+  DbCollection coll = db.collection('lost');
+  coll.insert({
+    "user": "username",
+    "Category": "categotyvalue",
+    "brand": "brandvalue",
+    "color": "colorvalue",
+    "description": "descriptionvalue",
+    "dateAndTime": "dateandtimeValue"
+  });
   dbc.closeConnection();
 }
