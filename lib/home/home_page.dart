@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lost_and_found/database/db_funtions.dart';
 import 'package:lost_and_found/home/lost_form.dart';
 import 'package:lost_and_found/home/found_form.dart';
 import 'package:lost_and_found/services/authservice.dart';
@@ -10,6 +11,7 @@ User? user;
 class HomePage extends StatefulWidget {
   HomePage(User? result) {
     user = result;
+    createarr(result);
   }
 
   @override
@@ -67,8 +69,8 @@ class _HomePageState extends State<HomePage> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => FoundForm()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => FoundForm(user)));
             },
             child: Container(
                 padding: new EdgeInsets.fromLTRB(50, 10, 50, 10),

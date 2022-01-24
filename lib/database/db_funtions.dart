@@ -1,46 +1,73 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lost_and_found/utils/location_access.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'db_connection.dart';
 
-crud() async {
+addFoundData(
+  User? user,
+  String categoryValue,
+  String brandValue,
+  String colorValue,
+  String descriptionValue,
+  String dateValue,
+  String timeValue,
+) async {
   DBConnection dbc = DBConnection.getInstance();
   Db db = await dbc.getConnection();
   DbCollection coll = db.collection('found');
 
-  await coll.insert({"brand": "redmi", "color": "black"});
-  await coll.insert({"brand": "poko", "color": "blue"});
-  await coll.insert({"brand": "lg", "color": "white"});
-  await coll.insert({"brand": "sony", "color": "black"});
-  await Future.delayed(const Duration(seconds: 10));
+  coll.insert({
+    "user": "${user?.uid}",
+    "category": "$categoryValue",
+    "brand": "$brandValue",
+    "color": "$colorValue",
+    "description": "$descriptionValue",
+    "dateAndTime": "$dateValue $timeValue"
+  });
 
-  var read = await coll.find(where.eq("color", "black")).toList();
-  read = await coll
-      .find(where.eq("color", "black").and(where.eq("brand", "redmi")))
-      .toList();
-  print(read);
-  await Future.delayed(const Duration(seconds: 10));
-
-  await coll.update(where.eq("brand", "lg"), modify.set("color", "red"));
-  await Future.delayed(const Duration(seconds: 10));
-
-  await coll.remove(where.eq("brand", "sony"));
-  await Future.delayed(const Duration(seconds: 10));
-
-  List<Map<String, dynamic>> mylist = await coll.find().toList();
-  print(mylist[0]["brand"]);
   dbc.closeConnection();
 }
 
-addLostData() async {
+addLostData(
+  User? user,
+  String categoryValue,
+  String brandValue,
+  String colorValue,
+  String descriptionValue,
+  String dateValue,
+  String timeValue,
+) async {
   DBConnection dbc = DBConnection.getInstance();
   Db db = await dbc.getConnection();
   DbCollection coll = db.collection('lost');
+
   coll.insert({
-    "user": "username",
-    "Category": "categotyvalue",
-    "brand": "brandvalue",
-    "color": "colorvalue",
-    "description": "descriptionvalue",
-    "dateAndTime": "dateandtimeValue"
+    "user": "${user?.uid}",
+    "category": "$categoryValue",
+    "brand": "$brandValue",
+    "color": "$colorValue",
+    "description": "$descriptionValue",
+    "dateAndTime": "$dateValue $timeValue"
   });
+
   dbc.closeConnection();
+}
+
+void createarr(User? user) async {
+  DBConnection dbc = DBConnection.getInstance();
+  Db db = await dbc.getConnection();
+  DbCollection coll = db.collection('user');
+  Timer.periodic(const Duration(seconds: 30), (timer) async {
+    var position = await LocationAccess.determinePosition();
+
+    await coll.insert({
+      "user": "${user?.uid}",
+      "time": "${position.timestamp.toString()}",
+      "location": {
+        "latitude": "${position.latitude.toString()}",
+        "longitude": "${position.longitude.toString()}"
+      }
+    });
+  });
 }
