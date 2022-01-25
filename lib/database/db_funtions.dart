@@ -18,6 +18,9 @@ crud() async {
   await Future.delayed(const Duration(seconds: 10));
 
   var read = await coll.find(where.eq("color", "black")).toList();
+  read = await coll
+      .find(where.eq("color", "black").and(where.eq("brand", "redmi")))
+      .toList();
   print(read);
   await Future.delayed(const Duration(seconds: 10));
 
@@ -27,7 +30,7 @@ crud() async {
   await coll.remove(where.eq("brand", "sony"));
   await Future.delayed(const Duration(seconds: 10));
 
-  read = await coll.find().toList();
-  print(read);
+  List<Map<String, dynamic>> mylist = await coll.find().toList();
+  print(mylist[0]["brand"]);
   dbc.closeConnection();
 }

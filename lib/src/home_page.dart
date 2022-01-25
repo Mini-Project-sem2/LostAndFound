@@ -3,6 +3,9 @@ import 'package:lost_and_found/src/lost_form.dart';
 import 'package:lost_and_found/src/found_form.dart';
 import 'package:lost_and_found/services/authservice.dart';
 import 'package:lost_and_found/utils/user.dart';
+import 'package:lost_and_found/widget/sidebar_widget.dart';
+
+
 
 Color blueColor = Color(0xFF1167b1);
 User? user;
@@ -15,14 +18,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            automaticallyImplyLeading: false,
+    return new Scaffold(
+         drawer:SidebarWidget(),
+          appBar:AppBar(
+            //automaticallyImplyLeading: true,
             backgroundColor: Colors.blueAccent,
-            leading: Icon(Icons.home_filled, color: Color(0xFFf5f5f5)),
+            /*leading: IconButton(
+              icon: Icon(
+                Icons.home_filled, 
+                color: Color(0xFFf5f5f5)
+                ),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+              ),*/
             title: Text(
-              'Home page',
+              'Home page',   
             ),
+            centerTitle: true,
             titleSpacing: 10,
             actions: <Widget>[
               Tooltip(
@@ -37,8 +48,8 @@ class _HomePageState extends State<HomePage> {
                       color: Color(0xFFf5f5f5),
                     ),
                     label: Text(''),
-                  ))
-            ]),
+                  )) 
+            ]  ), 
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           GestureDetector(
             onTap: () {
