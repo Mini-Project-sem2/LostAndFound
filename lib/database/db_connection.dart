@@ -1,3 +1,4 @@
+import 'package:lost_and_found/global_constant.dart';
 import 'package:mongo_dart/mongo_dart.dart' show Db;
 import 'Config.dart' as config show server_url, server_port, db_name;
 
@@ -18,7 +19,7 @@ class DBConnection {
       _db = Db(_getConnectionString());
       await _db.open();
     } catch (e) {
-      print(e);
+      logger.e(e);
     }
     return _db;
   }

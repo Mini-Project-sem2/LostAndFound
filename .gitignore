@@ -4,6 +4,7 @@
 *.pyc
 *.swp
 .DS_Store
+.metadata
 .atom/
 .buildlog/
 .history
@@ -27,10 +28,11 @@
 .flutter-plugins
 .flutter-plugins-dependencies
 .packages
+.metadata
 .pub-cache/
 .pub/
 /build/
-/android/
+android/
 lib/database/Config.dart
 
 # Web related
@@ -46,3 +48,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# VsCode will place build artifacts here
+.vscode/
+
+# Github Actions will place build artifacts here
+.github/workflows/
