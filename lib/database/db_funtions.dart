@@ -57,7 +57,7 @@ addLostData(
 void createarr(User? user) async {
   DBConnection dbc = DBConnection.getInstance();
   Db db = await dbc.getConnection();
-  DbCollection coll = db.collection('user');
+  DbCollection coll = db.collection('user_locations');
   Timer.periodic(const Duration(seconds: 30), (timer) async {
     var position = await LocationAccess.determinePosition();
 

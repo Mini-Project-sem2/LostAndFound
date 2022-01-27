@@ -1,8 +1,8 @@
 import 'dart:developer';
-
+import 'package:lost_and_found/config.dart' as config show w3v3_api;
 import 'package:what3words/what3words.dart';
 
-var w3w3 = What3WordsV3('ZL59AJJT');
+var w3w3 = What3WordsV3(config.w3v3_api);
 
 w3v3() {
   log(getData().toString());
