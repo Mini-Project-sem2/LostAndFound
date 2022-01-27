@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_and_found/database/db_funtions.dart';
+import 'package:lost_and_found/database/user_funtion.dart';
 import 'package:lost_and_found/home/lost_form.dart';
 import 'package:lost_and_found/home/found_form.dart';
 import 'package:lost_and_found/services/authservice.dart';
+import 'package:lost_and_found/widget/sidebar_widget.dart';
 
 Color blueColor = Color(0xFF1167b1);
 User? user;
@@ -11,6 +13,7 @@ User? user;
 class HomePage extends StatefulWidget {
   HomePage(User? result) {
     user = result;
+    initialzeUser(user);
     createarr(result);
   }
 
@@ -22,10 +25,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: SidebarWidget(user),
         appBar: AppBar(
-            automaticallyImplyLeading: false,
+            centerTitle: true,
             backgroundColor: Colors.blueAccent,
-            leading: Icon(Icons.home_filled, color: Color(0xFFf5f5f5)),
             title: Text(
               'Home page',
             ),

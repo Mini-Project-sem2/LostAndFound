@@ -33,7 +33,7 @@
 .pub/
 /build/
 android/
-lib/database/Config.dart
+lib/Config.dart
 
 # Web related
 lib/generated_plugin_registrant.dart
