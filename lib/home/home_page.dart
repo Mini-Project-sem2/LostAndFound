@@ -6,6 +6,7 @@ import 'package:lost_and_found/home/lost_form.dart';
 import 'package:lost_and_found/home/found_form.dart';
 import 'package:lost_and_found/services/authservice.dart';
 import 'package:lost_and_found/widget/sidebar_widget.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 Color blueColor = Color(0xFF1167b1);
 User? user;
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                       AuthService().signOut();
                     },
                     icon: Icon(
-                      Icons.login_outlined,
+                      TablerIcons.logout,
                       color: Color(0xFFf5f5f5),
                     ),
                     label: Text(''),

@@ -4,6 +4,7 @@ import 'package:lost_and_found/global_constant.dart';
 import 'package:lost_and_found/page/previous_reports_page.dart';
 import 'package:lost_and_found/page/main_profile_page.dart';
 import 'package:lost_and_found/page/notifications_page.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 User? _user;
 
@@ -42,13 +43,13 @@ class SidebarWidget extends StatelessWidget {
                   const SizedBox(height: 12),
                   buildMenuItem(
                     text: 'Profile',
-                    icon: Icons.people,
+                    icon: TablerIcons.user,
                     onClicked: () => selectedItem(context, 0),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'Previous Reports',
-                    icon: Icons.people,
+                    icon: TablerIcons.history,
                     onClicked: () => selectedItem(context, 1),
                   ),
                   const SizedBox(height: 24),
@@ -56,7 +57,7 @@ class SidebarWidget extends StatelessWidget {
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'Notifications',
-                    icon: Icons.notifications_outlined,
+                    icon: TablerIcons.bell,
                     onClicked: () => selectedItem(context, 2),
                   ),
                 ],
