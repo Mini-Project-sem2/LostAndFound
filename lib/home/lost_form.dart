@@ -199,40 +199,53 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 Padding(
                     padding: EdgeInsets.all(15),
                     child: ElevatedButton(
-                      child: Text(
-                        "submit",
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Trueno'),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blueAccent,
-                        elevation: 20,
-                        minimumSize: Size(500, 50),
-                        shadowColor: Colors.blueAccent,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                      ),
-                      onPressed: () {
-                        addLostData(
-                            _user,
-                            _dropdownValue,
-                            _brandController.text,
-                            _colorController.text,
-                            _descriptionController.text,
-                            _dateController.text,
-                            _timeController.text);
-                        Fluttertoast.showToast(
-                            msg: "lost form is submitted",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.lightBlueAccent,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => HomePage(_user)));
-                      },
-                    )),
+                        child: Text(
+                          "submit",
+                          style: TextStyle(
+                              color: Colors.white, fontFamily: 'Trueno'),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.blueAccent,
+                          elevation: 20,
+                          minimumSize: Size(500, 50),
+                          shadowColor: Colors.blueAccent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                        ),
+                        onPressed: () {
+                          try {
+                            addLostData(
+                                _user,
+                                _dropdownValue,
+                                _brandController.text,
+                                _colorController.text,
+                                _descriptionController.text,
+                                _dateController.text,
+                                _timeController.text);
+                            Fluttertoast.showToast(
+                                msg: "lost form is submitted",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.lightBlueAccent,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => HomePage(_user)));
+                          } catch (e) {
+                            Fluttertoast.showToast(
+                                msg:
+                                    "lost form not submitted due to ${e.toString()}",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.lightBlueAccent,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => HomePage(_user)));
+                          }
+                        })),
               ],
             ))));
   }

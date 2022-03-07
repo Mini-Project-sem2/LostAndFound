@@ -17,7 +17,7 @@ class DBConnection {
 
   Future<Db> getConnection() async {
     try {
-      _db = Db(_getConnectionString());
+      _db = await Db.create(_getConnectionString());
       await _db.open();
     } catch (e) {
       logger.e(e);
@@ -26,7 +26,7 @@ class DBConnection {
   }
 
   _getConnectionString() {
-    return "mongodb://$_host:$_port/$_dbName";
+    return "mongodb+srv://$_host:$_port/$_dbName";
   }
 
   closeConnection() {

@@ -112,7 +112,7 @@ class SidebarWidget extends StatelessWidget {
         break;
       case 1:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PreviousReportsPage(),
+          builder: (context) => PreviousReportsPage(_user),
         ));
         break;
       case 2:
