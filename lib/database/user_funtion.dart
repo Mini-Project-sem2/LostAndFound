@@ -19,19 +19,17 @@ void initialzeUser(User? user) async {
   dbc.closeConnection();
 }
 
-Future<List<dynamic>> getFoundUser(String uid) async {
+Future<List<dynamic>> getUser(String uid, String collection, var item) async {
   DBConnection dbc = DBConnection.getInstance();
   Db db = await dbc.getConnection();
 
-  DbCollection lostcoll = db.collection('lost');
   DbCollection locationscoll = db.collection('locations');
-  DbCollection foundcoll = db.collection('found');
+  DbCollection coll = db.collection(collection);
 
-  var lastReport = await lostcoll.find({'user': uid}).last;
-  var category = lastReport['category'];
-  var dateAndTime = lastReport['dateAndTime'];
+  var category = item['category'];
+  var dateAndTime = item['dateAndTime'];
 
-  var foundUsers = await foundcoll
+  var userslist = await coll
       .find(where.eq('category', category).gt('dateAndTime', dateAndTime))
       .toList();
 
@@ -46,10 +44,10 @@ Future<List<dynamic>> getFoundUser(String uid) async {
         .find(where.nearSphere('coordinates', location['coordinates']))
         .toList();
 
-    for (var foundUser in foundUsers) {
+    for (var user in userslist) {
       for (var intersectUser in intersectUser) {
-        if (foundUser['user'] == intersectUser['user']) {
-          users.add(foundUser);
+        if (user['user'] == intersectUser['user']) {
+          users.add(user);
         }
       }
     }
@@ -58,4 +56,14 @@ Future<List<dynamic>> getFoundUser(String uid) async {
   dbc.closeConnection();
 
   return users;
+}
+
+Future<List<dynamic>> getItemList(String uid, String collection) async {
+  DBConnection dbc = DBConnection.getInstance();
+  Db db = await dbc.getConnection();
+
+  DbCollection coll = db.collection(collection);
+  var items = await coll.find({'user': uid}).toList();
+  dbc.closeConnection();
+  return items;
 }

@@ -20,4 +20,5 @@ var logger = Logger(
 class GlobalResource {
   static const Color BLUE_COLOUR = Color(0xFF1167b1);
   static const Color DARK_BLUE = Color(0xFF001084);
+  static const Color TILE_COLOUR = Color.fromARGB(204, 190, 255, 233);
 }

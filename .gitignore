@@ -34,6 +34,7 @@
 .pub/
 /build/
 android/
+ios/
 lib/Config.dart
 
 # Web related
