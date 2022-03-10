@@ -45,16 +45,14 @@ reportsList(User? _user, BuildContext context) {
   );
 }
 
-getLostUserTiles(String uid, BuildContext context) async {
+Future<Widget> getLostUserTiles(String uid, BuildContext context) async {
   List<dynamic> itemsList = await getItemList(uid, "found");
   List<Widget> list = [];
 
   if (itemsList.length == 0) {
-    return [
-      Center(
-        child: Text('No one has reported for your found items'),
-      )
-    ];
+    return Center(
+      child: Text('No one has reported for your found items'),
+    );
   }
 
   for (var item in itemsList) {
@@ -81,5 +79,5 @@ getLostUserTiles(String uid, BuildContext context) async {
     );
   }
 
-  return list;
+  return Column(children: list);
 }

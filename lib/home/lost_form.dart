@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lost_and_found/database/db_funtions.dart';
 import 'package:lost_and_found/home/home_page.dart';
 import 'package:date_format/date_format.dart';
-import 'package:intl/intl.dart';
 
 User? _user;
 
@@ -22,7 +22,7 @@ class LostForm extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(centerTitle: true, title: const Text(_title)),
         body: const Center(
-          child: MyStatefulWidget(),
+          child: LostFormWidget(),
         ),
       ),
     );
@@ -30,15 +30,15 @@ class LostForm extends StatelessWidget {
 }
 
 /// This is the stateful widget that the main application instantiates.
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
+class LostFormWidget extends StatefulWidget {
+  const LostFormWidget({Key? key}) : super(key: key);
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<LostFormWidget> createState() => _LostFormWidgetState();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _LostFormWidgetState extends State<LostFormWidget> {
   String _dropdownValue = "government ids & certificate";
   List<String> _itemset = [
     "Electronic items",
@@ -48,11 +48,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     "Book",
     "pet"
   ];
+
   TextEditingController _brandController = TextEditingController();
-  TextEditingController _colorController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+
+  Color mycolor = Colors.lightBlue;
 
   @override
   Widget build(BuildContext context) {
@@ -107,14 +109,49 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 // color
                 Padding(
                   padding: EdgeInsets.all(15),
-                  child: TextField(
-                    controller: _colorController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      labelText: 'color',
-                      hintText: 'color of an object',
+                  child: ElevatedButton(
+                    child: Text(
+                      "pick a colour",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal),
                     ),
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: Size(500, 50),
+                        primary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        )),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Pick a color!'),
+                              content: SingleChildScrollView(
+                                child: ColorPicker(
+                                  pickerColor: mycolor, //default color
+                                  onColorChanged: (Color color) {
+                                    //on color picked
+                                    setState(() {
+                                      mycolor = color;
+                                    });
+                                  },
+                                ),
+                              ),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: const Text('DONE'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                    },
                   ),
                 ),
 
@@ -157,8 +194,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         if (picked != null)
                           setState(() {
                             selectedDate = picked;
-                            _dateController.text =
-                                DateFormat.yMd().format(selectedDate);
+                            _dateController.text = selectedDate.day.toString() +
+                                "/" +
+                                selectedDate.month.toString() +
+                                "/" +
+                                selectedDate.year.toString();
                           });
                       },
                     )),
@@ -214,14 +254,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                         onPressed: () {
                           try {
-                            addLostData(
+                            addReport(
                                 _user,
                                 _dropdownValue,
                                 _brandController.text,
-                                _colorController.text,
+                                mycolor,
                                 _descriptionController.text,
                                 _dateController.text,
-                                _timeController.text);
+                                _timeController.text,
+                                "lost");
                             Fluttertoast.showToast(
                                 msg: "lost form is submitted",
                                 toastLength: Toast.LENGTH_SHORT,
