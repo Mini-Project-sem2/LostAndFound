@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lost_and_found/utils/reporthelper.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'db_connection.dart';
 
@@ -33,20 +34,31 @@ Future<List<dynamic>> getUser(String uid, String collection, var item) async {
       .find(where.eq('category', category).gt('dateAndTime', dateAndTime))
       .toList();
 
-  var locations = await locationscoll
-      .find(where.eq('user', uid).gt('dateAndTime', dateAndTime))
-      .toList();
+  var locationslist = [];
+  switch (collection) {
+    case 'lost':
+      locationslist = await locationscoll
+          .find(where.eq('category', category).gt('dateAndTime', dateAndTime))
+          .toList();
+      break;
+    case 'found':
+      locationslist = await locationscoll
+          .find(where.eq('category', category).lt('dateAndTime', dateAndTime))
+          .toList();
+      break;
+  }
 
   var users = [];
 
-  for (var location in locations) {
+  for (var location in locationslist) {
     var intersectUser = await locationscoll
         .find(where.nearSphere('coordinates', location['coordinates']))
         .toList();
 
     for (var user in userslist) {
       for (var intersectUser in intersectUser) {
-        if (user['user'] == intersectUser['user']) {
+        if (user['user'] == intersectUser['user'] &&
+            compareColour(user['color'], item['color'])) {
           users.add(user);
         }
       }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 
 class GlobalConstant {
@@ -16,6 +17,17 @@ var logger = Logger(
       printTime: false // Should each log print contain a timestamp
       ),
 );
+
+toast(String msg) {
+  return Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.lightBlueAccent,
+      textColor: Colors.white,
+      fontSize: 16.0);
+}
 
 class GlobalResource {
   static const Color BLUE_COLOUR = Color(0xFF1167b1);

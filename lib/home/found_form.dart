@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lost_and_found/database/db_funtions.dart';
-import 'package:intl/intl.dart';
-import 'package:date_format/date_format.dart';
 import 'package:lost_and_found/home/home_page.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 User? _userid;
 
@@ -51,10 +50,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   ];
 
   TextEditingController _brandController = TextEditingController();
-  TextEditingController _colorController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+
+  Color mycolor = Colors.lightBlue;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   ),
                 ),
 
-                // name input field
                 Padding(
                   padding: EdgeInsets.all(15),
                   child: TextField(
@@ -109,14 +108,49 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 // color
                 Padding(
                   padding: EdgeInsets.all(15),
-                  child: TextField(
-                    controller: _colorController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      labelText: 'color',
-                      hintText: 'color of an object',
+                  child: ElevatedButton(
+                    child: Text(
+                      "pick a colour",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal),
                     ),
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: Size(500, 50),
+                        primary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        )),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Pick a color!'),
+                              content: SingleChildScrollView(
+                                child: ColorPicker(
+                                  pickerColor: mycolor, //default color
+                                  onColorChanged: (Color color) {
+                                    //on color picked
+                                    setState(() {
+                                      mycolor = color;
+                                    });
+                                  },
+                                ),
+                              ),
+                              actions: <Widget>[
+                                ElevatedButton(
+                                  child: const Text('DONE'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
+                    },
                   ),
                 ),
 
@@ -158,9 +192,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             lastDate: DateTime.now());
                         if (picked != null)
                           setState(() {
-                            selectedDate = picked;
-                            _dateController.text =
-                                DateFormat.yMd().format(selectedDate);
+                            String _year, _month, _day;
+                            _year = picked.year.toString();
+                            _month = picked.month.toString();
+                            _day = picked.day.toString();
+                            if (_day.length == 1) {
+                              _day = "0" + _day;
+                            }
+                            if (_month.length == 1) {
+                              _month = "0" + _month;
+                            }
+                            _dateController.text = _year.toString() +
+                                "-" +
+                                _month.toString() +
+                                "-" +
+                                _day.toString();
                           });
                       },
                     )),
@@ -186,12 +232,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           selectedTime = picked;
                           _hour = selectedTime.hour.toString();
                           _minute = selectedTime.minute.toString();
-                          _time = _hour + ' : ' + _minute;
+                          if (_hour.length == 1) {
+                            _hour = "0" + _hour;
+                          }
+                          if (_minute.length == 1) {
+                            _minute = "0" + _minute;
+                          }
+                          _time = _hour + ':' + _minute + ':00';
                           _timeController.text = _time;
-                          _timeController.text = formatDate(
-                              DateTime(2019, 08, 1, selectedTime.hour,
-                                  selectedTime.minute),
-                              [hh, ':', nn, " ", am]).toString();
                         });
                     },
                   ),
@@ -215,14 +263,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             borderRadius: BorderRadius.circular(30)),
                       ),
                       onPressed: () {
-                        addFoundData(
+                        addReport(
                             _userid,
                             _dropdownValue,
                             _brandController.text,
-                            _colorController.text,
+                            mycolor,
                             _descriptionController.text,
                             _dateController.text,
-                            _timeController.text);
+                            _timeController.text,
+                            "found");
                         Fluttertoast.showToast(
                             msg: "found form is submitted",
                             toastLength: Toast.LENGTH_SHORT,
