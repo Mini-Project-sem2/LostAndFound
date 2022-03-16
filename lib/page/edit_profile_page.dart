@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'dart:io';
 
 // import 'package:animated_theme_switcher/animated_theme_switcher.dart';
@@ -12,12 +13,31 @@ import 'package:lost_and_found/themes.dart';
 import 'package:lost_and_found/widget/textfield_widget.dart';
 
 class EditProfilePage extends StatefulWidget {
+=======
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:lost_and_found/model/user.dart';
+import 'package:lost_and_found/utils/user_preferences.dart';
+import 'package:lost_and_found/widget/profile_widget.dart';
+import 'package:lost_and_found/widget/textfield_widget.dart';
+
+auth.User? _user;
+
+class EditProfilePage extends StatefulWidget {
+  EditProfilePage(auth.User? user) {
+    _user = user;
+  }
+>>>>>>> 48b142eb6f37215b1c2a69d9996768ca85f4a42e
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+<<<<<<< HEAD
   User user = UserPreferences.myUser;
+=======
+  User user = UserPreferences(_user).myUser;
+>>>>>>> 48b142eb6f37215b1c2a69d9996768ca85f4a42e
 
   @override
   Widget build(BuildContext context) => Material(

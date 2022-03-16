@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_and_found/database/db_funtions.dart';
+import 'package:lost_and_found/database/user_funtion.dart';
 import 'package:lost_and_found/home/lost_form.dart';
 import 'package:lost_and_found/home/found_form.dart';
 import 'package:lost_and_found/services/authservice.dart';
 import 'package:lost_and_found/widget/sidebar_widget.dart';
-
-
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 Color blueColor = Color(0xFF1167b1);
 User? user;
@@ -14,6 +14,7 @@ User? user;
 class HomePage extends StatefulWidget {
   HomePage(User? result) {
     user = result;
+    initialzeUser(user);
     createarr(result);
   }
 
@@ -24,22 +25,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-         drawer:SidebarWidget(),
-          appBar:AppBar(
-            //automaticallyImplyLeading: true,
-            backgroundColor: Colors.blueAccent,
-            /*leading: IconButton(
-              icon: Icon(
-                Icons.home_filled, 
-                color: Color(0xFFf5f5f5)
-                ),
-              onPressed: () => Scaffold.of(context).openDrawer(),
-              ),*/
-            title: Text(
-              'Home page',   
-            ),
+    return Scaffold(
+        drawer: SidebarWidget(user),
+        appBar: AppBar(
             centerTitle: true,
+            backgroundColor: Colors.blueAccent,
+            title: Text(
+              'Home page',
+            ),
             titleSpacing: 10,
             actions: <Widget>[
               Tooltip(
@@ -50,12 +43,12 @@ class _HomePageState extends State<HomePage> {
                       AuthService().signOut();
                     },
                     icon: Icon(
-                      Icons.login_outlined,
+                      TablerIcons.logout,
                       color: Color(0xFFf5f5f5),
                     ),
                     label: Text(''),
-                  )) 
-            ]  ), 
+                  ))
+            ]),
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
               // print w3v3 value in text

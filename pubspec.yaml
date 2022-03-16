@@ -25,10 +25,10 @@ dependencies:
   
 
   logger: ^1.1.0
-  what3words: ^3.1.0
-  latlng: ^0.1.0
   fluttertoast: ^8.0.8
   geolocator: ^8.0.1
+  flutter_tabler_icons: ^1.1.1
+  flutter_colorpicker: ^1.0.3
   date_format: ^2.0.5
 
 dev_dependencies:

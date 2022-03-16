@@ -1,22 +1,31 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lost_and_found/global_constant.dart';
 import 'package:lost_and_found/page/previous_reports_page.dart';
 import 'package:lost_and_found/page/main_profile_page.dart';
 import 'package:lost_and_found/page/notifications_page.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
+
+User? _user;
 
 class SidebarWidget extends StatelessWidget {
+  SidebarWidget(User? curruser) {
+    _user = curruser;
+  }
   final padding = EdgeInsets.symmetric(horizontal: 20);
   @override
   Widget build(BuildContext context) {
-    final urlImage =
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
+    final urlImage = _user?.photoURL != null
+        ? _user?.photoURL
+        : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80';
 
     return Drawer(
       child: Material(
-        color: Color.fromRGBO(50, 75, 205, 1),
+        color: GlobalResource.BLUE_COLOUR,
         child: ListView(
           children: <Widget>[
             buildHeader(
-              urlImage: urlImage,
+              urlImage: urlImage.toString(),
             ),
             Container(
               padding: padding,
@@ -34,13 +43,13 @@ class SidebarWidget extends StatelessWidget {
                   const SizedBox(height: 12),
                   buildMenuItem(
                     text: 'Profile',
-                    icon: Icons.people,
+                    icon: TablerIcons.user,
                     onClicked: () => selectedItem(context, 0),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'Previous Reports',
-                    icon: Icons.people,
+                    icon: TablerIcons.history,
                     onClicked: () => selectedItem(context, 1),
                   ),
                   const SizedBox(height: 24),
@@ -48,7 +57,7 @@ class SidebarWidget extends StatelessWidget {
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'Notifications',
-                    icon: Icons.notifications_outlined,
+                    icon: TablerIcons.bell,
                     onClicked: () => selectedItem(context, 2),
                   ),
                 ],
@@ -98,19 +107,19 @@ class SidebarWidget extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MainProfilePage(),
+          builder: (context) => MainProfilePage(_user),
         ));
         break;
       case 1:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PreviousReportsPage(),
+          builder: (context) => PreviousReportsPage(_user),
         ));
         break;
-        case 2:
+      case 2:
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => NotificationsPage(),
         ));
         break;
     }
-  } 
+  }
 }
