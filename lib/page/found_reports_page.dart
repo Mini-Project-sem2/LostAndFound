@@ -35,9 +35,8 @@ reportsList(User? _user, BuildContext context) {
                     child: snapshot.data,
                   );
                 }
-                return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [CircularProgressIndicator()]);
+                return Container(
+                    child: Center(child: CircularProgressIndicator()));
               }),
         ],
       ),
@@ -57,24 +56,27 @@ Future<Widget> getLostUserTiles(String uid, BuildContext context) async {
 
   for (var item in itemsList) {
     list.add(
-      Container(
-        child: ListTile(
-          contentPadding: EdgeInsets.all(10),
-          textColor: Colors.black,
-          tileColor: GlobalResource.TILE_COLOUR,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+      Column(
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.all(10),
+            textColor: Colors.black,
+            tileColor: GlobalResource.TILE_COLOUR,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text(
+              item['category'],
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(item['description']),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SpecificFoundReport(_user, item)));
+            },
           ),
-          title: Text(
-            item['category'],
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(item['description']),
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => SpecificFoundReport(_user, item)));
-          },
-        ),
+          const SizedBox(height: 24),
+        ],
       ),
     );
   }

@@ -25,7 +25,7 @@ addReport(
     "user": user?.uid,
     "category": categoryValue.toLowerCase(),
     "brand": brandValue.toLowerCase(),
-    "color": colorValue,
+    "color": colorValue.value.toString(),
     "description": descriptionValue,
     "dateAndTime": dateTime.millisecondsSinceEpoch
   });
@@ -39,19 +39,16 @@ void createarr(User? user) async {
   DbCollection coll = db.collection('user_locations');
   await coll.createIndex(keys: {'location': '2dsphere'});
 
-  Timer.periodic(const Duration(minutes: 30), (timer) async {
+  Timer.periodic(const Duration(minutes: 5), (timer) async {
     Position position = await LocationAccess.determinePosition();
 
     await coll.insert({
       "user": user?.uid,
       "timestamp": DateTime.now().millisecondsSinceEpoch,
-      "location": {
-        "type": "Point",
-        "coordinates": [
-          double.parse((position.latitude).toStringAsFixed(2)),
-          double.parse((position.longitude).toStringAsFixed(2))
-        ]
-      }
+      "location_lat": double.parse((position.latitude).toStringAsFixed(2)),
+      "location_long": double.parse((position.longitude).toStringAsFixed(2)),
+      "latitude": position.latitude,
+      "longitude": position.longitude,
     });
   });
 }

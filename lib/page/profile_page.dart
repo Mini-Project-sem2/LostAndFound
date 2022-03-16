@@ -41,8 +41,6 @@ class _ProfilePageState extends State<ProfilePage> {
               buildName(user),
               const SizedBox(height: 48),
               buildPhoneNO(user),
-              const SizedBox(height: 48),
-              buildAddress(user),
             ],
           ),
         ),
@@ -75,24 +73,6 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 16),
             Text(
               user.phoneNo,
-              style: TextStyle(fontSize: 16, height: 1.4),
-            ),
-          ],
-        ),
-      );
-
-  Widget buildAddress(User user) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 48),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Address',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              user.address,
               style: TextStyle(fontSize: 16, height: 1.4),
             ),
           ],
