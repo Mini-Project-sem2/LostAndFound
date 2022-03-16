@@ -1,6 +1,7 @@
 import 'package:lost_and_found/global_constant.dart';
 import 'package:mongo_dart/mongo_dart.dart' show Db;
-import 'Config.dart' as config show server_url, server_port, db_name;
+import 'package:lost_and_found/Config.dart' as config
+    show server_url, server_port, db_name;
 
 class DBConnection {
   static late DBConnection _instance;
