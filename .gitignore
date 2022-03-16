@@ -34,7 +34,10 @@
 .pub/
 /build/
 android/
+<<<<<<< HEAD
+=======
 ios/
+>>>>>>> 48b142eb6f37215b1c2a69d9996768ca85f4a42e
 lib/Config.dart
 
 # Web related

@@ -30,6 +30,8 @@ addReport(
     "dateAndTime": dateTime.millisecondsSinceEpoch
   });
 
+  List<Map<String, dynamic>> mylist = await coll.find().toList();
+  print(mylist[0]["brand"]);
   dbc.closeConnection();
 }
 

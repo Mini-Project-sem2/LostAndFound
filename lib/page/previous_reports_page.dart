@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+
+class PreviousReportsPage extends StatelessWidget {
+=======
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lost_and_found/page/lost_reports_page.dart';
 import 'package:lost_and_found/page/found_reports_page.dart';
@@ -10,11 +14,17 @@ class PreviousReportsPage extends StatelessWidget {
     _user = user;
   }
 
+>>>>>>> 48b142eb6f37215b1c2a69d9996768ca85f4a42e
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           title: Text('Your Previous Reports'),
           centerTitle: true,
+<<<<<<< HEAD
+          backgroundColor: Colors.red,
+        ),
+      );
+=======
           backgroundColor: Colors.blueAccent,
         ),
         body: ListView(
@@ -77,4 +87,5 @@ class PreviousReportsPage extends StatelessWidget {
         break;
     }
   }
+>>>>>>> 48b142eb6f37215b1c2a69d9996768ca85f4a42e
 }
