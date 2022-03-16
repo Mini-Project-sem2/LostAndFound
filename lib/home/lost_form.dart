@@ -97,8 +97,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15)),
-                      labelText: 'Brand name',
-                      hintText: 'Enter Brand',
+                      labelText: 'Name',
+                      hintText: 'Enter Name',
                     ),
                   ),
                 ),
