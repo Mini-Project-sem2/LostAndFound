@@ -24,7 +24,7 @@ addReport(
   coll.insert({
     "user": user?.uid,
     "category": categoryValue.toLowerCase(),
-    "brand": brandValue.toLowerCase(),
+    "sub_category": brandValue.toLowerCase(),
     "color": colorValue.value.toString(),
     "description": descriptionValue,
     "dateAndTime": dateTime.millisecondsSinceEpoch

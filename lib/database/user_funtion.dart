@@ -37,7 +37,7 @@ Future<List<dynamic>> getUser(String uid, String collection, var item) async {
   String category = item['category'];
   var dateAndTime = item['dateAndTime'];
 
-  List userslist = await coll.find(where.eq('category', category)).toList();
+  List userslist = await coll.find(where.eq('sub_category', category)).toList();
 
   List locationslist = [];
   switch (collection) {
