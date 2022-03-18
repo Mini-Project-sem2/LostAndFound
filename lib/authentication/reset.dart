@@ -14,7 +14,6 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   Color blueColor = GlobalResource.BLUE_COLOUR;
 
-  //To check fields during submit
   checkFields() {
     final form = formKey.currentState;
     if (form!.validate()) {
@@ -24,7 +23,6 @@ class _ResetPasswordState extends State<ResetPassword> {
     return false;
   }
 
-  //To Validate email
   String? validateEmail(String value) {
     RegExp regex = new RegExp(GlobalConstant.PATTERN);
     if (!regex.hasMatch(value))

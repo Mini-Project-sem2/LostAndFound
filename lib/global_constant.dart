@@ -18,14 +18,14 @@ var logger = Logger(
       ),
 );
 
-toast(String msg) {
-  return Fluttertoast.showToast(
+void toast(String msg) {
+  Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.lightBlueAccent,
-      textColor: Colors.white,
+      backgroundColor: Colors.grey,
+      textColor: Colors.black,
       fontSize: 16.0);
 }
 

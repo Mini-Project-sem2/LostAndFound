@@ -45,7 +45,12 @@ specificLostReport(User? _user, var _item) {
 
                 return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [CircularProgressIndicator()]);
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator())
+                    ]);
               }),
         ],
       ),
@@ -65,8 +70,8 @@ Future<Widget> getTiles(String uid, var item) async {
 
   for (var user in usersList) {
     list.add(
-      Container(
-        child: ListTile(
+      Column(children: <Widget>[
+        ListTile(
           contentPadding: EdgeInsets.all(10),
           textColor: Colors.black,
           selectedColor: GlobalResource.TILE_COLOUR,
@@ -77,9 +82,42 @@ Future<Widget> getTiles(String uid, var item) async {
             user['user'],
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          subtitle: Text(user['description']),
+          subtitle: Container(
+            child: Column(
+              children: <Widget>[
+                Text(
+                  '${user['description']}',
+                  style: TextStyle(fontSize: 15),
+                ),
+                Text(
+                  '${user['date']}',
+                  style: TextStyle(fontSize: 15),
+                ),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                            child: Image.asset("./assets/email_logo.png",
+                                scale: 15)),
+                        SizedBox(width: 10.0),
+                        Center(
+                            child: Text('${user['email']}',
+                                style: TextStyle(fontFamily: 'Trueno'))),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(user['image']),
+          ),
         ),
-      ),
+        const SizedBox(height: 24),
+      ]),
     );
   }
 
