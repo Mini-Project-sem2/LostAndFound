@@ -25,7 +25,9 @@ double _findPercentage(Color color1, Color color2) {
   return percentage;
 }
 
-bool compareColour(Color color1, Color color2) {
-  double percentage = _findPercentage(color1, color2);
+bool compareColour(int color1, int color2) {
+  Color colorOne = Color(color1);
+  Color colorTwo = Color(color2);
+  double percentage = _findPercentage(colorOne, colorTwo);
   return percentage < 35.0;
 }

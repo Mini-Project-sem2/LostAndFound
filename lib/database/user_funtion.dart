@@ -24,50 +24,59 @@ Future<List<dynamic>> getUser(String uid, String collection, var item) async {
   DBConnection dbc = DBConnection.getInstance();
   Db db = await dbc.getConnection();
 
-  DbCollection locationscoll = db.collection('locations');
-  DbCollection coll = db.collection(collection);
+  DbCollection locationscoll = db.collection('user_locations');
+  DbCollection usercoll = db.collection("user");
+  DbCollection coll;
 
-  var category = item['category'];
+  if (collection == 'lost') {
+    coll = db.collection('found');
+  } else {
+    coll = db.collection('lost');
+  }
+
+  String category = item['category'];
   var dateAndTime = item['dateAndTime'];
 
-  var userslist = await coll
-      .find(where.eq('category', category).gt('dateAndTime', dateAndTime))
-      .toList();
+  List userslist = await coll.find(where.eq('sub_category', category)).toList();
 
-  var locationslist = [];
+  List locationslist = [];
   switch (collection) {
     case 'lost':
       locationslist = await locationscoll
-          .find(where.eq('category', category).gt('dateAndTime', dateAndTime))
+          .find(where.gte('timestamp', dateAndTime))
           .toList();
       break;
     case 'found':
       locationslist = await locationscoll
-          .find(where.eq('category', category).lt('dateAndTime', dateAndTime))
+          .find(where.lte('timestamp', dateAndTime))
           .toList();
       break;
   }
 
-  var users = [];
+  Set<dynamic> users = Set();
+  List intersectUser = [];
 
   for (var location in locationslist) {
-    var intersectUser = await locationscoll
-        .find(where.nearSphere('coordinates', location['coordinates']))
+    intersectUser = await locationscoll
+        .find(where
+            .eq('location_lat', location['location_lat'])
+            .eq('location_long', location['location_long'])
+            .ne('user', uid))
         .toList();
+  }
 
-    for (var user in userslist) {
-      for (var intersectUser in intersectUser) {
-        if (user['user'] == intersectUser['user'] &&
-            compareColour(user['color'], item['color'])) {
-          users.add(user);
-        }
+  for (var user in userslist) {
+    for (var intersectUser in intersectUser) {
+      if (user['user'].toString() == intersectUser['user'].toString() &&
+          compareColour(int.parse(user['color'].toString()),
+              int.parse(item['color'].toString()))) {
+        users.add(await usercoll.findOne(where.eq('user', user['user'])));
       }
     }
   }
 
   dbc.closeConnection();
-
-  return users;
+  return users.toList();
 }
 
 Future<List<dynamic>> getItemList(String uid, String collection) async {

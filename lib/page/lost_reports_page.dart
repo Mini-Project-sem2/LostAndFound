@@ -39,7 +39,12 @@ lostReportsList(User? _user, BuildContext context) {
 
                 return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [CircularProgressIndicator()]);
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator())
+                    ]);
               }),
         ],
       ),
@@ -59,24 +64,27 @@ Future<Widget> getFoundUserTiles(String uid, BuildContext context) async {
 
   for (var item in itemList) {
     list.add(
-      Container(
-        child: ListTile(
-          contentPadding: EdgeInsets.all(25),
-          textColor: Colors.black,
-          tileColor: GlobalResource.TILE_COLOUR,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+      Column(
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.all(25),
+            textColor: Colors.black,
+            tileColor: GlobalResource.TILE_COLOUR,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text(
+              item['category'],
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(item['description']),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => specificLostReport(_user, item)));
+            },
           ),
-          title: Text(
-            item['category'],
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(item['description']),
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => specificLostReport(_user, item)));
-          },
-        ),
+          const SizedBox(height: 24),
+        ],
       ),
     );
   }

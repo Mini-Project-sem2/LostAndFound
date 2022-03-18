@@ -100,8 +100,8 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15)),
-                      labelText: 'Brand name',
-                      hintText: 'Enter Brand',
+                      labelText: 'Name',
+                      hintText: 'Name',
                     ),
                   ),
                 ),
@@ -194,11 +194,8 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                         if (picked != null)
                           setState(() {
                             selectedDate = picked;
-                            _dateController.text = selectedDate.day.toString() +
-                                "/" +
-                                selectedDate.month.toString() +
-                                "/" +
-                                selectedDate.year.toString();
+                            _dateController.text = formatDate(
+                                selectedDate, [yyyy, '-', mm, '-', dd]);
                           });
                       },
                     )),
@@ -224,12 +221,14 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                           selectedTime = picked;
                           _hour = selectedTime.hour.toString();
                           _minute = selectedTime.minute.toString();
-                          _time = _hour + ' : ' + _minute;
+                          if (_hour.length == 1) {
+                            _hour = '0' + _hour;
+                          }
+                          if (_minute.length == 1) {
+                            _minute = '0' + _minute;
+                          }
+                          _time = _hour + ':' + _minute + ':' + '00';
                           _timeController.text = _time;
-                          _timeController.text = formatDate(
-                              DateTime(2019, 08, 1, selectedTime.hour,
-                                  selectedTime.minute),
-                              [hh, ':', nn, " ", am]).toString();
                         });
                     },
                   ),
