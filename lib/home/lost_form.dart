@@ -40,19 +40,24 @@ class LostFormWidget extends StatefulWidget {
 /// This is the private State class that goes with MyStatefulWidget.
 class _LostFormWidgetState extends State<LostFormWidget> {
   String _dropdownValue = "government ids & certificate";
+  late String _dropdownValue1 = "Other";
   List<String> _itemset = [
     "Electronic items",
     "government ids & certificate",
-    "Expensive items",
+    "Daily Accessories",
     "Bag",
     "Book",
     "pet"
   ];
+  List<String> Electronic_items = ['Laptop', 'mobile', 'charger', 'Other'];
+  List<String> Daily_Accessories = ['watch', 'footwear', 'umbrella', 'wallet', 'keys', 'Other'];
+  List<String> sub_Category = ['Other'];
 
   TextEditingController _brandController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+  TextEditingController _timeController1 = TextEditingController();
 
   Color mycolor = Colors.lightBlue;
 
@@ -77,11 +82,47 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                       icon: const Icon(Icons.arrow_drop_down),
                       iconSize: 24,
                       onChanged: (String? newValue) {
+                        if (newValue == 'Electronic items') {
+                          sub_Category = Electronic_items;
+                        } else if (newValue == 'Daily Accessories') {
+                          sub_Category = Daily_Accessories;
+                        } else {
+                          sub_Category = [];
+                        }
                         setState(() {
                           _dropdownValue = newValue!;
                         });
                       },
                       items: _itemset
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  // dropdown
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey)),
+                    child: DropdownButton<String>(
+                      hint: Text('Select sub-category'),
+                      value: _dropdownValue1,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      onChanged: (String? newValue1) {
+                        setState(() {
+                          _dropdownValue1 = newValue1!;
+                        });
+                      },
+                      items: sub_Category
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -201,6 +242,10 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                     )),
 
                 Padding(
+                  padding: EdgeInsets.only(left:15, top:15, right:15), //apply padding to three sides
+                  child: Text("Lost between", textAlign: TextAlign.left,),
+                ),
+                Padding(
                   padding: EdgeInsets.all(15),
                   child: TextField(
                     controller: _timeController,
@@ -234,6 +279,41 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                   ),
                 ),
 
+                
+                Padding(
+                  padding: EdgeInsets.all(15),
+                    
+                  child: TextField(
+                    controller: _timeController1,
+                    decoration: InputDecoration(
+                      labelText: 'Time',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      prefixIcon: Icon(Icons.access_time),
+                      hintText: "Time",
+                    ),
+                    onTap: () async {
+                      String _hour, _minute, _time;
+                      TimeOfDay selectedTime = TimeOfDay.now();
+                      final TimeOfDay? picked = await showTimePicker(
+                          context: context, initialTime: selectedTime);
+                      if (picked != null)
+                        setState(() {
+                          selectedTime = picked;
+                          _hour = selectedTime.hour.toString();
+                          _minute = selectedTime.minute.toString();
+                          _time = _hour + ' : ' + _minute;
+                          _timeController1.text = _time;
+                          _timeController1.text = formatDate(
+                              DateTime(2019, 08, 1, selectedTime.hour,
+                                  selectedTime.minute),
+                              [hh, ':', nn, " ", am]).toString();
+                        });
+                    },
+                  ),
+                ),
+                
+                
                 // submit button
                 Padding(
                     padding: EdgeInsets.all(15),
