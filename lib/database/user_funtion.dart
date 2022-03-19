@@ -28,30 +28,32 @@ Future<List<dynamic>> getUser(String uid, String collection, var item) async {
   DbCollection usercoll = db.collection("user");
   DbCollection coll;
 
+  double startTimestamp;
+  double endTimestamp;
+
   if (collection == 'lost') {
     coll = db.collection('found');
+    endTimestamp = double.parse(item['timestamp'].toString());
+    startTimestamp = endTimestamp - 10800000; // 3 hours
   } else {
     coll = db.collection('lost');
+    startTimestamp = double.parse(item['start_timestamp'].toString());
+    endTimestamp = double.parse(item['end_timestamp'].toString());
   }
 
-  String category = item['category'];
-  var dateAndTime = item['dateAndTime'];
+  String subCategory = item['sub_category'];
 
-  List userslist = await coll.find(where.eq('sub_category', category)).toList();
+  List userslist =
+      await coll.find(where.eq('sub_category', subCategory)).toList();
 
-  List locationslist = [];
-  switch (collection) {
-    case 'lost':
-      locationslist = await locationscoll
-          .find(where.gte('timestamp', dateAndTime))
-          .toList();
-      break;
-    case 'found':
-      locationslist = await locationscoll
-          .find(where.lte('timestamp', dateAndTime))
-          .toList();
-      break;
-  }
+  List locationslist = await locationscoll
+      .find(
+        where
+            .eq('uid', uid)
+            .and(where.gte('timestamp', startTimestamp))
+            .and(where.lte('timestamp', endTimestamp)),
+      )
+      .toList();
 
   Set<dynamic> users = Set();
   List intersectUser = [];
