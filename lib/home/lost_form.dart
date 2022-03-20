@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lost_and_found/database/db_funtions.dart';
+import 'package:lost_and_found/global_constant.dart';
 import 'package:lost_and_found/home/home_page.dart';
 import 'package:date_format/date_format.dart';
+import 'package:lost_and_found/utils/formhelper.dart';
 
 User? _user;
 
@@ -39,25 +40,19 @@ class LostFormWidget extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _LostFormWidgetState extends State<LostFormWidget> {
-  String _dropdownValue = "government ids & certificate";
-  late String _dropdownValue1 = "Other";
+  String _categoryValue = "pet";
+  String _subCategoryValue = "other";
   List<String> _itemset = [
     "Electronic items",
     "government ids & certificate",
     "Daily Accessories",
-    "Bag",
-    "Book",
     "pet"
   ];
-  List<String> Electronic_items = ['Laptop', 'mobile', 'charger', 'Other'];
-  List<String> Daily_Accessories = ['watch', 'footwear', 'umbrella', 'wallet', 'keys', 'Other'];
-  List<String> sub_Category = ['Other'];
 
-  TextEditingController _brandController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _dateController = TextEditingController();
-  TextEditingController _timeController = TextEditingController();
-  TextEditingController _timeController1 = TextEditingController();
+  TextEditingController _startTimeController = TextEditingController();
+  TextEditingController _endTimeController = TextEditingController();
 
   Color mycolor = Colors.lightBlue;
 
@@ -78,19 +73,12 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.grey)),
                     child: DropdownButton<String>(
-                      value: _dropdownValue,
+                      value: _categoryValue,
                       icon: const Icon(Icons.arrow_drop_down),
                       iconSize: 24,
                       onChanged: (String? newValue) {
-                        if (newValue == 'Electronic items') {
-                          sub_Category = Electronic_items;
-                        } else if (newValue == 'Daily Accessories') {
-                          sub_Category = Daily_Accessories;
-                        } else {
-                          sub_Category = [];
-                        }
                         setState(() {
-                          _dropdownValue = newValue!;
+                          _categoryValue = newValue!;
                         });
                       },
                       items: _itemset
@@ -114,35 +102,21 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                         border: Border.all(color: Colors.grey)),
                     child: DropdownButton<String>(
                       hint: Text('Select sub-category'),
-                      value: _dropdownValue1,
+                      value: _subCategoryValue,
                       icon: const Icon(Icons.arrow_drop_down),
                       iconSize: 24,
-                      onChanged: (String? newValue1) {
+                      onChanged: (String? newValue) {
                         setState(() {
-                          _dropdownValue1 = newValue1!;
+                          _subCategoryValue = newValue!;
                         });
                       },
-                      items: sub_Category
+                      items: getsubcategory(_categoryValue)
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
                         );
                       }).toList(),
-                    ),
-                  ),
-                ),
-
-                // brand name input field
-                Padding(
-                  padding: EdgeInsets.all(15),
-                  child: TextField(
-                    controller: _brandController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      labelText: 'Name',
-                      hintText: 'Name',
                     ),
                   ),
                 ),
@@ -242,13 +216,16 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                     )),
 
                 Padding(
-                  padding: EdgeInsets.only(left:15, top:15, right:15), //apply padding to three sides
-                  child: Text("Lost between", textAlign: TextAlign.left,),
+                  padding: EdgeInsets.all(15), //apply padding to three sides
+                  child: Text(
+                    "Lost between",
+                    textAlign: TextAlign.left,
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.all(15),
                   child: TextField(
-                    controller: _timeController,
+                    controller: _startTimeController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15)),
@@ -273,23 +250,21 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                             _minute = '0' + _minute;
                           }
                           _time = _hour + ':' + _minute + ':' + '00';
-                          _timeController.text = _time;
+                          _startTimeController.text = _time;
                         });
                     },
                   ),
                 ),
 
-                
                 Padding(
                   padding: EdgeInsets.all(15),
-                    
                   child: TextField(
-                    controller: _timeController1,
+                    controller: _endTimeController,
                     decoration: InputDecoration(
-                      labelText: 'Time',
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15)),
                       prefixIcon: Icon(Icons.access_time),
+                      labelText: 'Time',
                       hintText: "Time",
                     ),
                     onTap: () async {
@@ -302,18 +277,19 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                           selectedTime = picked;
                           _hour = selectedTime.hour.toString();
                           _minute = selectedTime.minute.toString();
-                          _time = _hour + ' : ' + _minute;
-                          _timeController1.text = _time;
-                          _timeController1.text = formatDate(
-                              DateTime(2019, 08, 1, selectedTime.hour,
-                                  selectedTime.minute),
-                              [hh, ':', nn, " ", am]).toString();
+                          if (_hour.length == 1) {
+                            _hour = '0' + _hour;
+                          }
+                          if (_minute.length == 1) {
+                            _minute = '0' + _minute;
+                          }
+                          _time = _hour + ':' + _minute + ':' + '00';
+                          _endTimeController.text = _time;
                         });
                     },
                   ),
                 ),
-                
-                
+
                 // submit button
                 Padding(
                     padding: EdgeInsets.all(15),
@@ -334,37 +310,23 @@ class _LostFormWidgetState extends State<LostFormWidget> {
                         onPressed: () {
                           try {
                             addReport(
-                                _user,
-                                _dropdownValue,
-                                _brandController.text,
-                                mycolor,
-                                _descriptionController.text,
-                                _dateController.text,
-                                _timeController.text,
-                                "lost");
-                            Fluttertoast.showToast(
-                                msg: "lost form is submitted",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.lightBlueAccent,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => HomePage(_user)));
+                                user: _user,
+                                category: _categoryValue,
+                                subcategory: _subCategoryValue,
+                                color: mycolor,
+                                description: _descriptionController.text,
+                                date: _dateController.text,
+                                time: _startTimeController.text,
+                                endTime: _endTimeController.text,
+                                collection: "lost");
+                            toast("lost form submitted");
                           } catch (e) {
-                            Fluttertoast.showToast(
-                                msg:
-                                    "lost form not submitted due to ${e.toString()}",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.lightBlueAccent,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => HomePage(_user)));
+                            toast(
+                                "lost form not submitted due to ${e.toString()}"
+                                    .toString());
                           }
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => HomePage(_user)));
                         })),
               ],
             ))));

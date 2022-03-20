@@ -50,7 +50,7 @@ Future<Widget> getLostUserTiles(String uid, BuildContext context) async {
 
   if (itemsList.length == 0) {
     return Center(
-      child: Text('No one has reported for your found items'),
+      child: Text('you have not found any item'),
     );
   }
 

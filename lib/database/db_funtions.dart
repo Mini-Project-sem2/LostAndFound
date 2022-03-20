@@ -6,29 +6,48 @@ import 'package:lost_and_found/utils/location_access.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'db_connection.dart';
 
-addReport(
-  User? user,
-  String categoryValue,
-  String brandValue,
-  Color colorValue,
-  String descriptionValue,
-  String dateValue,
-  String timeValue,
-  String collection,
-) async {
+addReport({
+  required User? user,
+  required String category,
+  required String subcategory,
+  required Color color,
+  required String description,
+  required String date,
+  required String time,
+  String? endTime,
+  required String collection,
+}) async {
   DBConnection dbc = DBConnection.getInstance();
   Db db = await dbc.getConnection();
   DbCollection coll = db.collection(collection);
-  DateTime dateTime = DateTime.parse("$dateValue $timeValue");
+  DateTime timestamp = DateTime.parse("$date $time");
+  DateTime endTimestamp = DateTime.now();
+  if (endTime != null) {
+    endTimestamp = DateTime.parse("$date $endTime");
+  }
 
-  coll.insert({
-    "user": user?.uid,
-    "category": categoryValue.toLowerCase(),
-    "sub_category": brandValue.toLowerCase(),
-    "color": colorValue.value.toString(),
-    "description": descriptionValue,
-    "dateAndTime": dateTime.millisecondsSinceEpoch
-  });
+  if (collection == "found") {
+    coll.insert({
+      "user": user?.uid,
+      "category": category.toLowerCase(),
+      "sub_category": subcategory.toLowerCase(),
+      "color": color.value.toString(),
+      "description": description,
+      "timestamp": timestamp.millisecondsSinceEpoch,
+      "status": "pending",
+    });
+  } else {
+    coll.insert({
+      "user": user?.uid,
+      "category": category.toLowerCase(),
+      "sub_category": subcategory.toLowerCase(),
+      "color": color.value.toString(),
+      "description": description,
+      "start_timestamp": timestamp.millisecondsSinceEpoch,
+      "end_timestamp": endTimestamp.millisecondsSinceEpoch,
+      "status": "pending",
+    });
+  }
 
   dbc.closeConnection();
 }
@@ -37,9 +56,8 @@ void createarr(User? user) async {
   DBConnection dbc = DBConnection.getInstance();
   Db db = await dbc.getConnection();
   DbCollection coll = db.collection('user_locations');
-  await coll.createIndex(keys: {'location': '2dsphere'});
 
-  Timer.periodic(const Duration(minutes: 5), (timer) async {
+  Timer.periodic(const Duration(minutes: 4), (timer) async {
     Position position = await LocationAccess.determinePosition();
 
     await coll.insert({
