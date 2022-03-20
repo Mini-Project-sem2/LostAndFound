@@ -21,10 +21,10 @@ void toast(String msg) {
   Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
-      backgroundColor: Colors.lightBlueAccent,
-      textColor: Colors.grey,
+      backgroundColor: Colors.white,
+      textColor: Colors.black,
       fontSize: 16.0);
 }
 

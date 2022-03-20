@@ -27,6 +27,7 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   date_format: ^2.0.5
   flutter_local_notifications: ^9.4.0
+  location: ^4.3.0
 
 dev_dependencies:
   flutter_test:
@@ -37,6 +38,7 @@ flutter:
   assets:
     - assets/google_logo.png
     - assets/track_it_logo.jpg
+    - assets/email_logo.png
 
   fonts:
     - family: Trueno

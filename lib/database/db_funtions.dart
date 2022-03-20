@@ -21,7 +21,10 @@ addReport({
   Db db = await dbc.getConnection();
   DbCollection coll = db.collection(collection);
   DateTime timestamp = DateTime.parse("$date $time");
-  DateTime endTimestamp = DateTime.parse("$date $endTime");
+  DateTime endTimestamp = DateTime.now();
+  if (endTime != null) {
+    endTimestamp = DateTime.parse("$date $endTime");
+  }
 
   if (collection == "found") {
     coll.insert({
@@ -54,7 +57,7 @@ void createarr(User? user) async {
   Db db = await dbc.getConnection();
   DbCollection coll = db.collection('user_locations');
 
-  Timer.periodic(const Duration(minutes: 5), (timer) async {
+  Timer.periodic(const Duration(minutes: 4), (timer) async {
     Position position = await LocationAccess.determinePosition();
 
     await coll.insert({

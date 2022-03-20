@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_and_found/authentication/login_page.dart';
+import 'package:lost_and_found/global_constant.dart';
 import 'package:lost_and_found/home/home_page.dart';
 import 'package:lost_and_found/authentication/error_handler.dart';
 
@@ -35,8 +36,8 @@ class AuthService {
     });
   }
 
-  googleLogin() {
-    FirebaseAuth user = signInWithGoogle() as FirebaseAuth;
+  googleLogin() async {
+    FirebaseAuth user = await signInWithGoogle();
     return StreamBuilder(
         stream: user.authStateChanges(),
         builder: (BuildContext context, snapshot) {
@@ -49,7 +50,6 @@ class AuthService {
 
   Future<FirebaseAuth> signInWithGoogle() async {
     FirebaseAuth auth = FirebaseAuth.instance;
-    // ignore: unused_local_variable
     UserCredential? userCredential;
 
     final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -80,6 +80,7 @@ class AuthService {
       }
     }
 
+    toast("Signed in with Google sucessed for ${userCredential?.user?.email}");
     return auth;
   }
 

@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lost_and_found/database/db_funtions.dart';
@@ -91,6 +92,35 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   ),
                 ),
 
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  // dropdown
+                  child: Container(
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey)),
+                    child: DropdownButton<String>(
+                      hint: Text('Select sub-category'),
+                      value: _subCategoryValue,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _subCategoryValue = newValue!;
+                        });
+                      },
+                      items: getsubcategory(_categoryValue)
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+
                 // color
                 Padding(
                   padding: EdgeInsets.all(15),
@@ -140,35 +170,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   ),
                 ),
 
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  // dropdown
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.grey)),
-                    child: DropdownButton<String>(
-                      hint: Text('Select sub-category'),
-                      value: _subCategoryValue,
-                      icon: const Icon(Icons.arrow_drop_down),
-                      iconSize: 24,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _subCategoryValue = newValue!;
-                        });
-                      },
-                      items: getsubcategory(_categoryValue)
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-
                 // Description
                 Padding(
                   padding: EdgeInsets.all(15),
@@ -207,21 +208,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             lastDate: DateTime.now());
                         if (picked != null)
                           setState(() {
-                            String _year, _month, _day;
-                            _year = picked.year.toString();
-                            _month = picked.month.toString();
-                            _day = picked.day.toString();
-                            if (_day.length == 1) {
-                              _day = "0" + _day;
-                            }
-                            if (_month.length == 1) {
-                              _month = "0" + _month;
-                            }
-                            _dateController.text = _year.toString() +
-                                "-" +
-                                _month.toString() +
-                                "-" +
-                                _day.toString();
+                            selectedDate = picked;
+                            _dateController.text = formatDate(
+                                selectedDate, [yyyy, '-', mm, '-', dd]);
                           });
                       },
                     )),
@@ -248,12 +237,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           _hour = selectedTime.hour.toString();
                           _minute = selectedTime.minute.toString();
                           if (_hour.length == 1) {
-                            _hour = "0" + _hour;
+                            _hour = '0' + _hour;
                           }
                           if (_minute.length == 1) {
-                            _minute = "0" + _minute;
+                            _minute = '0' + _minute;
                           }
-                          _time = _hour + ':' + _minute + ':00';
+                          _time = _hour + ':' + _minute + ':' + '00';
                           _timeController.text = _time;
                         });
                     },
