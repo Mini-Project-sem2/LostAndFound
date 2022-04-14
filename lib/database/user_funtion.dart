@@ -95,3 +95,10 @@ Future<List<dynamic>> getItemList(String uid, String collection) async {
   dbc.closeConnection();
   return items;
 }
+
+void updatePhoneNo(uid, phoneNo) async {
+  DBConnection dbc = DBConnection.getInstance();
+  Db db = await dbc.getConnection();
+  DbCollection coll = db.collection('user');
+  await coll.updateOne(where.eq('uid', uid), where.eq('phoneNumber', phoneNo));
+}

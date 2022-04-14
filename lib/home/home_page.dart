@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_and_found/database/db_funtions.dart';
+import 'package:lost_and_found/database/notify_db.dart';
 import 'package:lost_and_found/database/user_funtion.dart';
 import 'package:lost_and_found/home/lost_form.dart';
 import 'package:lost_and_found/home/found_form.dart';
@@ -15,7 +16,8 @@ class HomePage extends StatefulWidget {
   HomePage(User? result) {
     user = result;
     initialzeUser(user);
-    createarr(result);
+    trackUser(user);
+    Notify.notifyMe();
   }
 
   @override

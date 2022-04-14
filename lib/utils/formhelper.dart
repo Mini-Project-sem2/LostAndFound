@@ -10,7 +10,7 @@ List<String> getsubcategory(String categoryValue) {
   ];
   List<String> dailyAccessories = [
     'wearables',
-    'umbrella',
+    'bag',
     'wallet',
     'keys',
     'other'
@@ -29,7 +29,7 @@ List<String> getsubcategory(String categoryValue) {
     return electronicItems;
   } else if (categoryValue == 'Daily Accessories') {
     return dailyAccessories;
-  } else if (categoryValue == 'government ids & certificate') {
+  } else if (categoryValue == 'Government ids & certificate') {
     return govIds;
   } else {
     return ['cat', 'dog', 'other'].toList();

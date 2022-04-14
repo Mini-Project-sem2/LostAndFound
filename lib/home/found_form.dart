@@ -73,6 +73,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.grey)),
                     child: DropdownButton<String>(
+                      isExpanded: true,
                       value: _categoryValue,
                       icon: const Icon(Icons.arrow_drop_down),
                       iconSize: 24,
@@ -101,6 +102,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.grey)),
                     child: DropdownButton<String>(
+                      isExpanded: true,
                       hint: Text('Select sub-category'),
                       value: _subCategoryValue,
                       icon: const Icon(Icons.arrow_drop_down),
@@ -135,7 +137,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     ),
                     style: ElevatedButton.styleFrom(
                         minimumSize: Size(500, 50),
-                        primary: Colors.white,
+                        primary: Colors.grey,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         )),
@@ -268,16 +270,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       ),
                       onPressed: () {
                         try {
-                          addReport(
-                              user: _userid,
-                              category: _categoryValue,
-                              subcategory: _subCategoryValue,
-                              color: mycolor,
-                              description: _descriptionController.text,
-                              date: _dateController.text,
-                              time: _timeController.text,
-                              collection: "found");
-                          toast("found form submitted");
+                          _confirmDetails();
+                          // addReport(
+                          //     user: _userid,
+                          //     category: _categoryValue,
+                          //     subcategory: _subCategoryValue,
+                          //     color: mycolor,
+                          //     description: _descriptionController.text,
+                          //     date: _dateController.text,
+                          //     time: _timeController.text,
+                          //     collection: "found");
+                          // toast("found form submitted");
                         } catch (e) {
                           toast(
                               "found form not submitted due to ${e.toString()}"
@@ -289,5 +292,104 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     )),
               ],
             ))));
+  }
+
+  void _confirmDetails() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          title: new Text('Confirm Details'),
+          content: new SingleChildScrollView(
+            child: new ListBody(
+              children: [
+                const SizedBox(height: 16),
+                Text(
+                  'Category: $_categoryValue',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Sub-Category: $_subCategoryValue',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Color: $mycolor',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Description: ${_descriptionController.text}',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Date: ${_dateController.text}',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Found before: ${_timeController.text}',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            new ElevatedButton(
+                child: Text(
+                  "Confirm",
+                  style: TextStyle(color: Colors.white, fontFamily: 'Trueno'),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blueAccent,
+                  elevation: 20,
+                  minimumSize: Size(500, 50),
+                  shadowColor: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                ),
+                onPressed: () {
+                  try {
+                    addReport(
+                        user: _userid,
+                        category: _categoryValue,
+                        subcategory: _subCategoryValue,
+                        color: mycolor,
+                        description: _descriptionController.text,
+                        date: _dateController.text,
+                        time: _timeController.text,
+                        collection: "found");
+                    toast("found form submitted");
+                  } catch (e) {
+                    toast("found form not submitted due to ${e.toString()}"
+                        .toString());
+                  }
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => HomePage(_userid)));
+                }),
+            const SizedBox(height: 16),
+            new ElevatedButton(
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white, fontFamily: 'Trueno'),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blueAccent,
+                  elevation: 20,
+                  minimumSize: Size(500, 50),
+                  shadowColor: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+          ],
+        );
+      },
+    );
   }
 }

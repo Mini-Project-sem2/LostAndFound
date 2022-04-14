@@ -1,26 +1,30 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class MyNotification {
-  static final _notification = FlutterLocalNotificationsPlugin();
-  static final _initSettings = InitializationSettings();
+class TrackItNotification {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
-  static Future<void> init() async {
-    await _notification.initialize(_initSettings,
-        onSelectNotification: (payload) async {
-      print(payload);
-    });
+  TrackItNotification() {
+    const initializationSettingsAndroid =
+        AndroidInitializationSettings('app_icon');
+    const initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  static Future<void> show(String title, String body) async {
-    var _android = AndroidNotificationDetails(
-      'channel id',
-      'channel name',
-      channelDescription: 'channel description',
-      importance: Importance.high,
-      priority: Priority.high,
-      ticker: 'ticker',
+  Future showNotification(String category, String subcategory) async {
+    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        '1', 'track it',
+        playSound: true, importance: Importance.max, priority: Priority.high);
+    const platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'item lost',
+      'trackit user $subcategory in $category lost near you, /n if found near you ',
+      platformChannelSpecifics,
+      payload: '',
     );
-    var platformChannel = NotificationDetails(android: _android);
-    await _notification.show(0, title, body, platformChannel);
   }
 }
