@@ -29,9 +29,9 @@ addReport({
   if (collection == "found") {
     coll.insert({
       "user": user?.uid,
-      "category": category.toLowerCase(),
-      "sub_category": subcategory.toLowerCase(),
-      "color": color.value.toString(),
+      "category": category,
+      "sub_category": subcategory,
+      "color": color.value,
       "description": description,
       "timestamp": timestamp.millisecondsSinceEpoch,
       "status": "pending",
@@ -39,9 +39,9 @@ addReport({
   } else {
     coll.insert({
       "user": user?.uid,
-      "category": category.toLowerCase(),
-      "sub_category": subcategory.toLowerCase(),
-      "color": color.value.toString(),
+      "category": category,
+      "sub_category": subcategory,
+      "color": color.value,
       "description": description,
       "start_timestamp": timestamp.millisecondsSinceEpoch,
       "end_timestamp": endTimestamp.millisecondsSinceEpoch,
@@ -52,14 +52,23 @@ addReport({
   dbc.closeConnection();
 }
 
-void createarr(User? user) async {
+void trackUser(User? user) async {
   DBConnection dbc = DBConnection.getInstance();
   Db db = await dbc.getConnection();
   DbCollection coll = db.collection('user_locations');
 
-  Timer.periodic(const Duration(minutes: 4), (timer) async {
-    Position position = await LocationAccess.determinePosition();
+  Position position = await LocationAccess.determinePosition();
+  await coll.insert({
+    "user": user?.uid,
+    "timestamp": DateTime.now().millisecondsSinceEpoch,
+    "location_lat": double.parse((position.latitude).toStringAsFixed(2)),
+    "location_long": double.parse((position.longitude).toStringAsFixed(2)),
+    "latitude": position.latitude,
+    "longitude": position.longitude,
+  });
 
+  Timer.periodic(const Duration(minutes: 10), (timer) async {
+    position = await LocationAccess.determinePosition();
     await coll.insert({
       "user": user?.uid,
       "timestamp": DateTime.now().millisecondsSinceEpoch,

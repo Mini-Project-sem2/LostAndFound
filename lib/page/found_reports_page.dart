@@ -36,6 +36,8 @@ reportsList(User? _user, BuildContext context) {
                   );
                 }
                 return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
                     child: Center(child: CircularProgressIndicator()));
               }),
         ],

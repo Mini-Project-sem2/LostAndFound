@@ -49,6 +49,8 @@ specificLostReport(User? _user, var _item) {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
                           alignment: Alignment.center,
                           child: CircularProgressIndicator())
                     ]);

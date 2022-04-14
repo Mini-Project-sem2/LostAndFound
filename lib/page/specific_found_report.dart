@@ -44,6 +44,8 @@ foundReportsList(User? _user, var item) {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
                           alignment: Alignment.center,
                           child: CircularProgressIndicator())
                     ]);
@@ -104,6 +106,12 @@ Future<Widget> getLostUserTiles(String uid, var item) async {
             leading: CircleAvatar(
               backgroundImage: NetworkImage(userinfo?['photoUrl']),
             ),
+            onTap: () {
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => ));
+            },
           ),
           const SizedBox(height: 24),
         ]),

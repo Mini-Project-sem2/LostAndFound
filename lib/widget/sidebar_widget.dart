@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lost_and_found/global_constant.dart';
+import 'package:lost_and_found/page/edit_profile_page.dart';
 import 'package:lost_and_found/page/previous_reports_page.dart';
-import 'package:lost_and_found/page/main_profile_page.dart';
 import 'package:lost_and_found/page/notifications_page.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
@@ -107,7 +107,8 @@ class SidebarWidget extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MainProfilePage(_user),
+          builder: (context) => EditProfilePage(_user),
+          // builder: (context) => MainProfilePage(_user),
         ));
         break;
       case 1:

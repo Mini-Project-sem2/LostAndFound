@@ -42,6 +42,8 @@ lostReportsList(User? _user, BuildContext context) {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
                           alignment: Alignment.center,
                           child: CircularProgressIndicator())
                     ]);
